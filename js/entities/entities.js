@@ -31,8 +31,21 @@ game.PlayerEntity = me.Entity.extend({
             //me.timer.tick makes the movement look smooth
             this.body.vel.x += this.body.accel.x * me.timer.tick;
             this.flipX(true);
+        } //if key is pressed it will be left
+        else if(me.input.isKeyPressed("left")){
+            this.flipX(true);
+            this.body.vel.x -=this.body.accel.x * me.timer.tick;
         }else{
             this.body.vel.x = 0;
+        }
+        
+
+        //If space a certain key is pressed then it will make the person/character jump
+          if(me.input.isKeyPressed("jump")){
+              if(!this.body.jumping && !this.body.falling) {
+              this.body.vel.y = -this.body.maxVel.y * me.timer.tick;
+            this.body.jumping = true;
+        }
         }
         
         if(this.body.vel.x !== 0){
@@ -50,3 +63,11 @@ game.PlayerEntity = me.Entity.extend({
         return true;
     }
 });
+
+game.PlayerBaseEntity = me.Entity.extend({
+    init : function(x, y, settings){
+        
+    },
+    
+    
+})
