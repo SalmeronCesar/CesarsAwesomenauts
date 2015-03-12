@@ -17,6 +17,8 @@ game.PlayerEntity = me.Entity.extend({
         }]);
     //Moving 5 units 
     this.body.setVelocity(5, 20);
+    //Here we follow our player whever it goes on both x and y axis.
+    me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
     
     this.renderable.addAnimation("idle", [78]);
     this.renderable.addAnimation("walk", [117, 118, 119, 120, 121, 122, 123, 124, 125], 80);
@@ -63,11 +65,86 @@ game.PlayerEntity = me.Entity.extend({
         return true;
     }
 });
-
+//Width, height and spriteheight and width are 100.
 game.PlayerBaseEntity = me.Entity.extend({
     init : function(x, y, settings){
-        
+        this._super(me.Entity, 'init', [x, y, {
+                image: "tower",
+                width: 100,
+                height: 100,
+                spritewidth: "100",
+                spriteheight: "100",
+                getShape: function(){
+                    return(new me.Rect(0, 0, 100, 100 )).toPolygon();
+                }
+        }]);
+    //Here this.broken is false saying that my tower cannot break.
+    //Here this.health equals ten is the health of the tower.
+    //Here in this.alwaysUpdate the games keeps updating even if we arent loooking at the screen.
+    //Here this.body.onCollision makes you collide with the tower.
+        this.broken = false;
+        this.health = 10;
+        this.alwaysUpdate = true;
+        this.body.onCollision = this.onCollision.bind(this);
+        //The type is PlayerBaseEntity.
+        this.type = "PlayerBaseEntity";
+        //Here we add a animation that the tower is broken and set the current
+        //animation to standing which is idle.
+        this.renderable.addAnimation("idle", [0]);
+        this.renderable.addAnimation("broken", [1]);
+        this.renderable.setCurrentAnimation("idle");
     },
     
+    update:function(){
+        if(this.health<=0){
+            this.broken = true;
+            this.renderable.setCurrentAnimation("broken");
+        }
+        this.body.update(delta);
+        
+        this._super(me.Entity, "update", [delta]);
+        return true;
+    }
     
-})
+});
+
+game.EnemyBaseEntity = me.Entity.extend({
+    init : function(x, y, settings){
+        this._super(me.Entity, 'init', [x, y, {
+                image: "tower",
+                width: 100,
+                height: 100,
+                spritewidth: "100",
+                spriteheight: "100",
+                getShape: function(){
+                    return(new me.Rect(0, 0, 100, 100 )).toPolygon();
+                }
+        }]);
+    //Here this.broken is false saying that my tower cannot break.
+    //Here this.health equals ten is the health of the tower.
+    //Here in this.alwaysUpdate the games keeps updating even if we arent loooking at the screen.
+    //Here this.body.onCollision makes you collide with the tower.
+        this.broken = false;
+        this.health = 10;
+        this.alwaysUpdate = true;
+        this.body.onCollision = this.onCollision.bind(this);
+        
+        this.type = "EnemyBaseEntity";
+        
+        this.renderable.addAnimation("idle", [0]);
+        this.renderable.addAnimation("broken", [1]);
+        this.renderable.setCurrentAnimation("idle");
+    },
+    
+    update:function(){
+        if(this.health<=0){
+            this.broken = true;
+            this.renderable.setCurrentAnimation("broken");
+        }
+        this.body.update(delta);
+        
+        this._super(me.Entity, "update", [delta]);
+        return true;
+    }
+    
+});
