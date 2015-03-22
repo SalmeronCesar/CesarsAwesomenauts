@@ -11,10 +11,12 @@ game.PlayScreen = me.ScreenObject.extend({
 //We are pulling the player out of the pool.
                 var player = me.pool.pull("player", 0, 420, {});
                 me.game.world.addChild(player, 5);
-                //When you press the right key the player moves to the right.
+                //When you press the right, left, space, and a. The player goes
+                // right,left, jumps and attacks
                 me.input.bindKey(me.input.KEY.RIGHT, "right");
                 me.input.bindKey(me.input.KEY.LEFT, "left");
                 me.input.bindKey(me.input.KEY.SPACE, "jump");
+                me.input.bindKey(me.input.KEY.A, "attack");
                 
 		// add our HUD to the game world
 		this.HUD = new game.HUD.Container();
