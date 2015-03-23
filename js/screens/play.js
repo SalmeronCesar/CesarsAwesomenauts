@@ -11,6 +11,9 @@ game.PlayScreen = me.ScreenObject.extend({
 //We are pulling the player out of the pool.
                 var player = me.pool.pull("player", 0, 420, {});
                 me.game.world.addChild(player, 5);
+                
+                var gamemanager = me.pool.pull("GameManager", 0, 0, {});
+                me.game.world.addChild(gamemanager, 0);
                 //When you press the right, left, space, and a. The player goes
                 // right,left, jumps and attacks
                 me.input.bindKey(me.input.KEY.RIGHT, "right");
