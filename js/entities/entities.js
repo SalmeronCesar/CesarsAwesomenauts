@@ -16,15 +16,17 @@ game.PlayerEntity = me.Entity.extend({
                 }
             }]);
         //Moving 5 units 
-        this.body.setVelocity(5, 20);
+        this.type = "PlayerEntity";
+        this.health = game.data.playerHealth;
+        this.body.setVelocity(game.data.playerMoveSpeed, 20);
         //Keeps track of which direction your character is going
         this.facing = "right";
         this.now = new Date().getTime();
+        this.dead = false;
         this.lastHit = this.now;
         this.lastAtttack = new Date().getTime();
         //Here we follow our player whenever it goes on both x and y axis.
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
-        this.type = "PlayerEntity";
         this.renderable.addAnimation("idle", [78]);
         this.renderable.addAnimation("walk", [117, 118, 119, 120, 121, 122, 123, 124, 125], 80);
         this.renderable.addAnimation("attack", [61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72], 80);
@@ -34,6 +36,11 @@ game.PlayerEntity = me.Entity.extend({
     update: function(delta) {
         console.log("update");
         this.now = new Date().getTime();
+        
+        if(this.health <= 0){
+            this.dead = true;
+        }
+        
         if (me.input.isKeyPressed("right")) {
             //adds to the position of my x by the velocity defined above in 
             //setVelocity() and multiplying it byme.tick.
@@ -101,37 +108,37 @@ game.PlayerEntity = me.Entity.extend({
 
             if (xdif > -35 && this.facing === 'right' && (xdif < 0)) {
                 this.body.vel.x = 0;
-                this.pos.x = this.pos.x - 1;
+                //this.pos.x = this.pos.x - 1;
             } else if (xdif < 0 && this.facing === 'left' && xdif > 0) {
                 this.body.vel.x = 0;
-                this.pos.x = this.pos.x + 1;
+                //this.pos.x = this.pos.x + 1;
             }
-            if (this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= 1000) {
+            if (this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= game.data.playerAttackTimer) {
                 this.lastHit = this.now;
-                response.b.loseHealth();
+                response.b.loseHealth(game.data.playerAttack);
             }
         }else if(response.b.type==='EnemyCreep'){
             var xdif = this.pos.x - response.b.pos.x;
             var ydif = this.pos.y - response.b.pos.y;
             
             if(xdif>0){
-                this.pos.x = this.pos.x +1;
+                //this.pos.x = this.pos.x +1;
                 if(this.facing==="left"){
                     this.body.vel.x = 0;
                 }
             }else{
-                this.pos.x = this.pos.x -1;
+                //this.pos.x = this.pos.x -1;
                 if(this.facing==="right"){
                     this.body.vel.x = 0;
                 }
             }
             
-            if(this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= 1000
+            if(this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= game.data.playerAttackTimer
                    && (Math.abs(ydif) <=40) && 
                    ((xdif>0) && this.facing==="left") || ((xdif<0) && this.facing==="right")
                    ){
                 this.lastHit = this.now;
-                response.b.loseHealth(1);
+                response.b.loseHealth(game.data.playerAttack);
             }
         }
     }
@@ -154,7 +161,7 @@ game.PlayerBaseEntity = me.Entity.extend({
         //Here in this.alwaysUpdate the games keeps updating even if we arent loooking at the screen.
         //Here this.body.onCollision makes you collide with the tower.
         this.broken = false;
-        this.health = 10;
+        this.health = game.data.playerBaseHealth;
         this.alwaysUpdate = true;
         this.body.onCollision = this.onCollision.bind(this);
         //The type is PlayerBaseEntity.
@@ -201,7 +208,7 @@ game.EnemyBaseEntity = me.Entity.extend({
         //Here in this.alwaysUpdate the games keeps updating even if we arent loooking at the screen.
         //Here this.body.onCollision makes you collide with the tower.
         this.broken = false;
-        this.health = 10;
+        this.health = game.data.enemyBaseHealth;
         this.alwaysUpdate = true;
         //this.attacking lets us know if the enemy is currently attacking 
         this.attacking = false;
@@ -247,7 +254,7 @@ game.EnemyCreep = me.Entity.extend({
                     return(new me.Rect(0, 0, 32, 64)).toPolygon();
                 }
             }]);
-        this.health = 10;
+        this.health = game.data.enemyCreepHealth;
         this.alwaysUpdate = true;
         //this.attacking lets us know if the player is attacking
         this.attacking = false;
@@ -295,7 +302,7 @@ game.EnemyCreep = me.Entity.extend({
                 this.lastHit = this.now;
                 //makes the player base call its loseHealth function and passes it
                 //a damage of 1
-                response.b.loseHealth(1);
+                response.b.loseHealth(game.data.enemyCreepAttack);
             }
         } else if (response.b.type === 'PlayerEntity') {
             var xdif = this.pos.x - response.b.pos.x;
@@ -314,7 +321,7 @@ game.EnemyCreep = me.Entity.extend({
                 this.lastHit = this.now;
                 //makes the player call its loseHealth function and passes it
                 //a damage of 1
-                response.b.loseHealth(1);
+                response.b.loseHealth(game.data.enemyCreepAttack);
             }
         }
     }
@@ -330,6 +337,11 @@ game.GameManager = Object.extend({
     },
     update: function() {
         this.now = new Date().getTime();
+//Resets the player
+        if(game.data.player.dead){
+            me.game.world.removeChild(game.data.player);
+            me.state.current().resetPlayer(10, 0);
+        }
 
         if (Math.round(this.now / 1000) % 10 === 0 && (this.now - this.lastCreep >= 1000)) {
             this.lastCreep = this.now;
