@@ -18,7 +18,7 @@ game.TitleScreen = me.ScreenObject.extend({
                     }
                 })));
                 
-                this.handler = me.event.suscribe(me.event.KEYDOWN, function(action, keyCode, edge){
+                this.handler = me.event.suscribe(me.event.KEYDOWN, function(action, keyCode, edgeg){
                     if(action === "start"){
                         me.state.change(me.state.PLAY)
                     }
