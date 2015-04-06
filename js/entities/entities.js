@@ -5,7 +5,22 @@
 // corners and the 64s are the height and the width.
 game.PlayerEntity = me.Entity.extend({
     init: function(x, y, settings) {
-        this._super(me.Entity, 'init', [x, y, {
+       this.setSuper();
+       this.setPlayerTimers();
+       this.setAttributes();
+        //Moving 5 units 
+        this.type = "PlayerEntity";
+        this.setFlags();
+        //Here we follow our player whenever it goes on both x and y axis.
+        me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+        
+        this.addAnimation();
+
+        this.renderable.setCurrentAnimation("idle");
+    },
+    
+    setSuper: function(){
+         this._super(me.Entity, 'init', [x, y, {
                 image: "player",
                 width: 64,
                 height: 64,
@@ -15,32 +30,38 @@ game.PlayerEntity = me.Entity.extend({
                     return(new me.Rect(0, 0, 64, 64)).toPolygon();
                 }
             }]);
-        //Moving 5 units 
-        this.type = "PlayerEntity";
+    },
+    
+    setPlayerTimers: function(){
+      this.now = new Date().getTime();  
+      this.lastHit = this.now;
+      this.lastAtttack = new Date().getTime();
+    },
+    
+    setAttributes: function(){
         this.health = game.data.playerHealth;
         this.body.setVelocity(game.data.playerMoveSpeed, 20);
+        this.attack = game.data.playerAttack;
+    },
+    
+    setFlags: function(){
         //Keeps track of which direction your character is going
         this.facing = "right";
-        this.now = new Date().getTime();
-        this.dead = false;
-        this.attack = game.data.playerAttack;
-        this.lastHit = this.now;
-        this.lastAtttack = new Date().getTime();
-        //Here we follow our player whenever it goes on both x and y axis.
-        me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+        this.dead = false;  
+    },
+    
+    addAnimation: function(){
         this.renderable.addAnimation("idle", [78]);
         this.renderable.addAnimation("walk", [117, 118, 119, 120, 121, 122, 123, 124, 125], 80);
         this.renderable.addAnimation("attack", [61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72], 80);
-
-        this.renderable.setCurrentAnimation("idle");
     },
     update: function(delta) {
         console.log("update");
         this.now = new Date().getTime();
         
-        if(this.health <= 0){
-            this.dead = true;
-        }
+        this.dead = checkIfDead();
+        
+        this.checkKeyPressesAndMove();
         
         if (me.input.isKeyPressed("right")) {
             //adds to the position of my x by the velocity defined above in 
@@ -94,6 +115,13 @@ game.PlayerEntity = me.Entity.extend({
         this._super(me.Entity, "update", [delta]);
         return true;
     },
+    checkIfDead: function(){
+        if(this.health <= 0){
+           return true;
+        }
+        return false;
+    },
+    
     loseHealth: function(damage) {
         this.health = this.health - damage;
     },
