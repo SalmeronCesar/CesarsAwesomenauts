@@ -48,6 +48,7 @@ game.PlayerEntity = me.Entity.extend({
         //Keeps track of which direction your character is going
         this.facing = "right";
         this.dead = false;  
+        this.attacking = false;
     },
     
     addAnimation: function(){
@@ -58,36 +59,61 @@ game.PlayerEntity = me.Entity.extend({
     update: function(delta) {
         console.log("update");
         this.now = new Date().getTime();
-        
         this.dead = checkIfDead();
-        
         this.checkKeyPressesAndMove();
-        
+        this.setAnimation();
+        me.collision.check(this, true, this.collideHandler.bind(this), true);
+        this.body.update(delta);
+        this._super(me.Entity, "update", [delta]);
+        return true;
+    },
+    checkIfDead: function(){
+        if(this.health <= 0){
+           return true;
+        }
+        return false;
+    },
+    
+    checkKeyPressesandMove: function(){
         if (me.input.isKeyPressed("right")) {
-            //adds to the position of my x by the velocity defined above in 
+            this.MoveRight();
+     }else if (me.input.isKeyPressed("left")) {
+            this.MoveLeft();
+        } else {
+            this.body.vel.x = 0;
+        }
+        //If space a certain key is pressed then it will make the person/character jump
+        if (me.input.isKeyPressed("jump")) {
+            this.jump();
+        }
+        this.attacking = me.input.isKeyPressed("attack");
+    },
+    
+    MoveRight: function(){
+      //adds to the position of my x by the velocity defined above in 
             //setVelocity() and multiplying it byme.tick.
             //me.timer.tick makes the movement look smooth
             this.body.vel.x += this.body.accel.x * me.timer.tick;
             this.facing = "right";
             this.flipX(true);
-        } //if key is pressed it will be left
-        else if (me.input.isKeyPressed("left")) {
-            this.facing = "left";
+         //if key is pressed it will be left  
+    },
+    
+    MoveLeft:  function(){
+        this.facing = "left";
             this.flipX(true);
             this.body.vel.x -= this.body.accel.x * me.timer.tick;
-        } else {
-            this.body.vel.x = 0;
-        }
-
-        //If space a certain key is pressed then it will make the person/character jump
-        if (me.input.isKeyPressed("jump")) {
-            if (!this.body.jumping && !this.body.falling) {
+    },
+    
+    jump: function(){
+        if (!this.body.jumping && !this.body.falling) {
                 this.body.vel.y = -this.body.maxVel.y * me.timer.tick;
                 this.body.jumping = true;
             }
-        }
-
-        if (me.input.isKeyPressed("attack")) {
+    },
+    
+    setAnimation: function(){
+      if (this.attacking) {
             if (!this.renderable.isCurrentAnimation("attack")) {
                 //Sets the current animation to attack and once that is over goes 
                 //back to the idle animation.
@@ -98,28 +124,13 @@ game.PlayerEntity = me.Entity.extend({
                 this.renderable.setAnimationFrame();
             }
         }
-
-
         else if (this.body.vel.x !== 0 && !this.renderable.isCurrentAnimation("attack")) {
             if (!this.renderable.isCurrentAnimation("walk")) {
                 this.renderable.setCurrentAnimation("walk");
             }
         } else if (!this.renderable.isCurrentAnimation("attack")) {
             this.renderable.setCurrentAnimation("idle");
-        }
-
-        me.collision.check(this, true, this.collideHandler.bind(this), true);
-
-        this.body.update(delta);
-
-        this._super(me.Entity, "update", [delta]);
-        return true;
-    },
-    checkIfDead: function(){
-        if(this.health <= 0){
-           return true;
-        }
-        return false;
+        }  
     },
     
     loseHealth: function(damage) {
