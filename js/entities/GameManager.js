@@ -13,13 +13,13 @@ game.GameTimerManager = Object.extend({
 
         return true;
     },
-    
+    //check thetimer for the gold you get when playing the game
     goldTimerCheck: function(){
         if (Math.round(this.now / 1000) % 20 === 0 && (this.now - this.lastCreep >= 1000)) {
             game.data.gold += 1;
         }
     },
-    
+    //checks the creeps time
     creepTimerCheck: function(){
         if (Math.round(this.now / 1000) % 10 === 0 && (this.now - this.lastCreep >= 1000)) {
             this.lastCreep = this.now;
@@ -28,10 +28,11 @@ game.GameTimerManager = Object.extend({
         }
     }
 });
-
+//Here it manages the heroes death
 game.HeroDeathManager = Object.extend({
     init: function(x, y, settings){
         this.alwaysUpdate = true;
+        this.gameOver = false;
     },
     
     update: function(){
@@ -40,5 +41,35 @@ game.HeroDeathManager = Object.extend({
             me.game.world.removeChild(game.data.player);
             me.state.current().resetPlayer(10, 0);
         }
+        
+        return true;
     }
+});
+
+game.ExperienceManager  = Object.extend({
+    init: function(){
+        this.alwaysUpdate = true;
+    },
+    
+    update: function(){
+        if(game.data.win === true && !this.gameOver){
+            this.gameOver(true);
+        }else if(game.data.win === false){
+            this.gameOver(false);
+
+        } 
+        return true;
+    },
+    
+    gameOver: function(win){
+        if(win){
+            game.data.exp += 10;
+        }else{
+            game.data.exp += 1;
+        }
+        
+        this.gameOver = true;
+        me.save.exp = game.data.exp;
+    }
+    
 });

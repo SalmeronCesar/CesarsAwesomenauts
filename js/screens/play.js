@@ -17,6 +17,9 @@ game.PlayScreen = me.ScreenObject.extend({
                 me.game.world.addChild(gameTimerManager, 0);
                 //When you press the right, left, space, and a. The player goes
                 // right,left, jumps and attacks
+                var experienceManager = me.pool.pull("ExperienceManager", 0, 0, {});
+                me.game.world.addChild(experienceManager, 0);
+                
                 me.input.bindKey(me.input.KEY.RIGHT, "right");
                 me.input.bindKey(me.input.KEY.LEFT, "left");
                 me.input.bindKey(me.input.KEY.SPACE, "jump");

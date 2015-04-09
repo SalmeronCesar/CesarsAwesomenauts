@@ -15,6 +15,8 @@ game.EnemyBaseEntity = me.Entity.extend({
         //Here in this.alwaysUpdate the games keeps updating even if we arent loooking at the screen.
         //Here this.body.onCollision makes you collide with the tower.
         this.broken = false;
+        //If I destroy the enemies base I win
+        game.data.win = true;
         this.health = game.data.enemyBaseHealth;
         this.alwaysUpdate = true;
         //this.attacking lets us know if the enemy is currently attacking 
