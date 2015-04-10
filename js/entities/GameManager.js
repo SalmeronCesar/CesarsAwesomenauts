@@ -71,7 +71,6 @@ game.ExperienceManager  = Object.extend({
         
         this.gameover = true;
         me.save.exp = game.data.exp;
-        me.save.exp2 = 4;
     }
     
 });
