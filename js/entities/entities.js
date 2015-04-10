@@ -55,7 +55,7 @@ game.PlayerEntity = me.Entity.extend({
         console.log("update");
         this.now = new Date().getTime();
         this.dead = this.checkIfDead();
-        this.checkKeyPressesAndMove();
+        this.checkKeyPressesandMove();
         this.setAnimation();
         me.collision.check(this, true, this.collideHandler.bind(this), true);
         this.body.update(delta);
@@ -159,7 +159,7 @@ game.PlayerEntity = me.Entity.extend({
         this.stopMovement(xdif);
         
        if(this.checkAttack(xdif, ydif)){
-           
+            this.hitCreep(response);
        };
     },
 
@@ -181,7 +181,7 @@ game.PlayerEntity = me.Entity.extend({
                 ((xdif > 0) && this.facing === "left") || ((xdif < 0) && this.facing === "right")
                 ) {
             this.lastHit = this.now;
-            this.hitCreep();
+           
                 return true;
             }
                 return false;
