@@ -13,7 +13,7 @@ $salt = "$5$" . "rounds=5000$" . uniqid(mt_rand(), true) . "$";
 $hashedPassword = crypt($password, $salt);
 //This query is going to insert and set variables like email,username,passwords and the salt.
 $query = $_SESSION["connection"]->query("INSERT INTO users SET "
-        . "email = '$email',"
+        . "email = '',"
         . "username = '$username',"
         . "password = '$hashedPassword',"
         . "salt = '$salt',");
@@ -23,8 +23,8 @@ $query = $_SESSION["connection"]->query("INSERT INTO users SET "
         . "exp3 = 0,"
         . "exp4 = 0");
         
-        $_SESSION("name")
-        
+        $_SESSION("name") = $username;
+         
 if($query) {
     //Needs this for Ajax on index.php
     echo "true";
