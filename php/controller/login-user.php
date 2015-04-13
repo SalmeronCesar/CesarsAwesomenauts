@@ -33,9 +33,9 @@ if($query->num_rows == 1) {
     //The else statement is used to tell if you if its true or false.
     //We are saying that there is an Invalid username and password.
     else {
-        echo "<p>Invalid username and password</p>";
+        echo "Invalid username and password";
     }
 }
 else{
-    echo "<p>Invalid username and password</p>";
+    echo "Invalid username and password";
 }

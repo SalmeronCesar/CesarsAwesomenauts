@@ -25,7 +25,7 @@ game.NewProfile = me.ScreenObject.extend({
                 return true;
             }
         })));
-       
+    }, 
     /**	
      *  action to perform when leaving this screen (state change)
      */
