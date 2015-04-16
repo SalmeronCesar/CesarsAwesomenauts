@@ -56,6 +56,7 @@ game.PlayerEntity = me.Entity.extend({
         this.now = new Date().getTime();
         this.dead = this.checkIfDead();
         this.checkKeyPressesandMove();
+        this.checkAbilityKeys();
         this.setAnimation();
         me.collision.check(this, true, this.collideHandler.bind(this), true);
         this.body.update(delta);
@@ -102,6 +103,19 @@ game.PlayerEntity = me.Entity.extend({
             this.body.jumping = true;
         }
     },
+    
+    checkAbilityKeys: function(){
+        if(me.input.isKeyPressed("skill1")){
+            //this.speedBurst();
+        }else if(me.input.isKeyPressed("skill2")){
+            //this.eatCreep();
+        }else if(me.input.isKeyPressed("skill3")){
+           this.throwSpear();
+        }
+    },
+   
+   
+   
     setAnimation: function() {
         if (this.attacking) {
             if (!this.renderable.isCurrentAnimation("attack")) {
