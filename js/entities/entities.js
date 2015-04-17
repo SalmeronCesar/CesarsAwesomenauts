@@ -33,6 +33,7 @@ game.PlayerEntity = me.Entity.extend({
     setPlayerTimers: function() {
         this.now = new Date().getTime();
         this.lastHit = this.now;
+        this.lastSpear = this.now;
         this.lastAtttack = new Date().getTime();
     },
     setAttributes: function() {
@@ -114,7 +115,13 @@ game.PlayerEntity = me.Entity.extend({
         }
     },
    
-   
+   throwSpear: function(){
+       if(this.lastSpear >= game.data.spearTimer && game.data.ability3 >= 0){
+       this.lastSpear = this.now;
+            var spear = me.pool.pull("spaer", this.pos.x, this.pos.y, {});
+            me.game.world.addChild(spear, 10);
+        }  
+   },
    
     setAnimation: function() {
         if (this.attacking) {
