@@ -32,7 +32,7 @@ require_once("php/controller/create-db.php");
                 <label for='password'>Password</label>
                 <input type='password' name='password' id='password'
             </div>
-
+            <!--The buttons for register, load annd mainmenu-->
             <button type='button' id='register'>Register</button>
             <button type='button' id='load'>Load</button>
             <button type='button' id='mainmenu'>Main Menu</button>
@@ -59,88 +59,88 @@ require_once("php/controller/create-db.php");
                 <script type="text/javascript" src="js/entities/HUD.js"></script>
                 <script type="text/javascript" src="js/screens/title.js"></script>
                 <script type="text/javascript" src="js/screens/play.js"></script>
-                <script type="text/javascript" src="js/screens/spendExp"></script>
+                <script type="text/javascript" src="js/screens/spendExp.js"></script>
                 <script type="text/javascript" src="js/screens/loadProfile.js"></script>
                 <script type="text/javascript" src="js/screens/newProfile.js"></script>
                 <!-- /build -->
                 <!-- Bootstrap & Mobile optimization tricks -->
                 <script type="text/javascript">
 
-                            window.onReady(function onReady() {
-                            game.onload();
-                                    // Mobile browser hacks
-                                    if (me.device.isMobile && !navigator.isCocoonJS) {
+                    window.onReady(function onReady() {
+                        game.onload();
+                        // Mobile browser hacks
+                        if (me.device.isMobile && !navigator.isCocoonJS) {
                             // Prevent the webview from moving on a swipe
-                            window.document.addEventListener("touchmove", function (e) {
-                            e.preventDefault();
-                                    window.scroll(0, 0);
-                                    return false;
+                            window.document.addEventListener("touchmove", function(e) {
+                                e.preventDefault();
+                                window.scroll(0, 0);
+                                return false;
                             }, false);
-                                    // Scroll away mobile GUI
-                                            (function () {
-                                            window.scrollTo(0, 1);
-                                                    me.video.onresize(null);
-                                            }).defer();
-                                            me.event.subscribe(me.event.WINDOW_ONRESIZE, function (e) {
-                                            window.scrollTo(0, 1);
-                                            });
-                                    }
-                                    });		</script>
+                            // Scroll away mobile GUI
+                            (function() {
+                                window.scrollTo(0, 1);
+                                me.video.onresize(null);
+                            }).defer();
+                            me.event.subscribe(me.event.WINDOW_ONRESIZE, function(e) {
+                                window.scrollTo(0, 1);
+                            });
+                        }
+                    });</script>
 
                 <script>
-                                    $("#mainmenu").bind("click", function(){
-                            me.state.change(me.state.MENU);
-                            });
-                                    $("#register").bind("click", function(){
-                            $.ajax({
+                    $("#mainmenu").bind("click", function() {
+                        me.state.change(me.state.MENU);
+                    });
+                    $("#register").bind("click", function() {
+                        $.ajax({
                             type: "POST",
-                                    url: "php/controller/create-user.php",
-                                    data: {
-                                    username: $('#username').val(),
-                                            password: $('#password').val()
-                                    },
-                                    dataType: "text"
-                            })
-                                    .success(function(response){
-                                    if (response === "true"){
-                                    me.state.change(me.state.PLAY);
+                            url: "php/controller/create-user.php",
+                            data: {
+                                username: $('#username').val(),
+                                password: $('#password').val()
+                            },
+                            dataType: "text"
+                        })
+                                .success(function(response) {
+                                    if (response === "true") {
+                                        me.state.change(me.state.PLAY);
                                     }
-                                    else{
-                                    alert(response);
+                                    else {
+                                        alert(response);
                                     }
                                 })
-                                    .fail(function(response){
+                                .fail(function(response) {
                                     alert("Fail");
-                                    });
-                                    });
-                                    $("#load").bind("click", function(){
-                            $.ajax({
-                            type: "POST",
-                                    url: "php/controller/login-user.php",
-                                    data: {
-                                    username: $('#username').val(),
-                                            password: $'#password').val()
-                                    },
-                                    dataType: "text"
+                                });
+                    });
+                    $("#load").bind("click", function(){
+                    $.ajax({
+                    type: "POST",
+                            url: "php/controller/login-user.php",
+                            data: {
+                            username: $('#username').val(),
+                                    password: $('#password').val()
+                            },
+                            dataType: "text"
+                    })
+                            .success(function(response){
+                            if (response === "Invalid username and password"){
+                            alert(response);
+                            }
+                            else{
+                            var data = jQuery.parseJSON(response);
+                                    game.data.exp = data["exp"];
+                                    game.data.exp1 = data["exp1"];
+                                    game.data.exp2 = data["exp2"];
+                                    game.data.exp3 = data["exp3"];
+                                    game.data.exp4 = data["exp4"];
+                                    me.state.change(me.state.SPENDEXP);
+                            }
+                            }
+                            .fail(function(response){
+                            alert("Fail");
                             })
-                                    .success(function(response){
-                                    if (response === "Invalid username and password"){
-                                    alert(response);
-                                    }
-                                    ) else{
-                                    var data = jQuery.parseJSON(response);
-                                            game.data.exp = data["exp"];
-                                            game.data.exp1 = data["exp1"];
-                                            game.data.exp2 = data["exp2"];
-                                            game.data.exp3 = data["exp3"];
-                                            game.data.exp4 = data["exp4"];
-                                            me.state.change(me.state.SPENDEXP);
-                                    }
-                                    }}
-                                    .fail(function(response){
-                                    alert("Fail");
-                                    })
-                                    });
+                            });
                 </script>
                 </body>
                 </html>
