@@ -8,6 +8,8 @@ var game = {
         //EnemyCreepAttack, playerAttack set to 1
         //playerAttackTimer and creepAttackTimer set to 1000
         score: 0,
+        option1: "",
+        option2: "",
         enemyBaseHealth: 10,
         playerBaseHealth: 10,
         enemyCreepHealth: 10,
