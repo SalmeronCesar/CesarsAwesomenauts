@@ -6,7 +6,6 @@ $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_STRING);
 //We input the filter to sanitize the password
 $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_EMAIL);
 
-echo $password;
 //We are telling this to create a unique id and to create random numbers to  make sure this random number is unique as possible
 $salt = "$5$" . "rounds=5000$" . uniqid(mt_rand(), true) . "$";
 

@@ -1,4 +1,3 @@
-<!-- We are now entering the config file.-->
 <?php
 require_once(__DIR__ . "/../model/config.php");
 //authenticateUser is set to the authenticated database.

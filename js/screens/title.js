@@ -50,7 +50,7 @@ game.TitleScreen = me.ScreenObject.extend({
 
 
         }));
-        me.game.world.addChild(game.data.option1);
+        me.game.world.addChild(game.data.option2);
     },
     
     /**	

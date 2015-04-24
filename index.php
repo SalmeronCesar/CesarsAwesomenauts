@@ -57,7 +57,7 @@ require_once("php/controller/create-db.php");
                 <script type="text/javascript" src="js/gamemanagers/SpendGold.js"></script>
                 <script type="text/javascript" src="js/gamemanagers/HeroDeathManager.js"></script>
                 <script type="text/javascript" src="js/entities/HUD.js"></script>
-                <script type="text/javascript" src="Spearthrow/HUD.js"></script>
+                <script type="text/javascript" src="js/entities/SpearThrow.js"></script>
                 <script type="text/javascript" src="js/screens/title.js"></script>
                 <script type="text/javascript" src="js/screens/play.js"></script>
                 <script type="text/javascript" src="js/screens/spendExp.js"></script>
@@ -137,11 +137,11 @@ require_once("php/controller/create-db.php");
                                     game.data.exp4 = data["exp4"];
                                     me.state.change(me.state.SPENDEXP);
                             }
-                            }
+                            })
                             .fail(function(response){
                             alert("Fail");
-                            })
                             });
+                        });
                 </script>
                 </body>
                 </html>
