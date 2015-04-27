@@ -32,7 +32,7 @@ require_once("php/controller/create-db.php");
                 <label for='password'>Password</label>
                 <input type='password' name='password' id='password'
             </div>
-            <!--The buttons for register, load annd mainmenu-->
+            <!--The buttons for register, load and mainmenu-->
             <button type='button' id='register'>Register</button>
             <button type='button' id='load'>Load</button>
             <button type='button' id='mainmenu'>Main Menu</button>
@@ -58,6 +58,7 @@ require_once("php/controller/create-db.php");
                 <script type="text/javascript" src="js/gamemanagers/HeroDeathManager.js"></script>
                 <script type="text/javascript" src="js/entities/HUD.js"></script>
                 <script type="text/javascript" src="js/entities/SpearThrow.js"></script>
+                <script type="text/javascript" src="js/screens/MiniMap.js"></script>
                 <script type="text/javascript" src="js/screens/title.js"></script>
                 <script type="text/javascript" src="js/screens/play.js"></script>
                 <script type="text/javascript" src="js/screens/spendExp.js"></script>
