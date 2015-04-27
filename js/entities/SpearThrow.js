@@ -1,5 +1,5 @@
 game.SpearThrow = me.Entity.extend({
-    init: function(x, y, settings){
+    init: function(x, y, settings, facing){
        this._super(me.Entity, 'init', [x, y, {
                 image: "spear",
                 width: 48,
@@ -15,12 +15,15 @@ game.SpearThrow = me.Entity.extend({
         this.body.setVelocity(8, 0);
         this.attack = game.data.ability3*3;
         this.type = "spear"; 
+        this.facing = facing
     },
     
     update: function(delta){
-
+        if(this.facing === "left"){
         this.body.vel.x -= this.body.accel.x * me.timer.tick;
-
+        }else{
+            this.body.vel.x += this.body.accel.x * me.timer.tick;
+        }
         me.collision.check(this, true, this.collideHandler.bind(this), true);
 
         this.body.update(delta);
@@ -30,9 +33,8 @@ game.SpearThrow = me.Entity.extend({
     },
     
     collideHandler: function(response) {
-        if (response.b.type === 'EnemyBase') {
+        if (response.b.type === 'EnemyBase' || response.b.type === 'EnemyCreep') {
             response.b.loseHealth(this.attack);
-            }   if (response.b.type === 'EnemyBase') {
-            response.b.loseHealth(this.attack);
+            me.game.world.removeChild(this);
             }
          });
