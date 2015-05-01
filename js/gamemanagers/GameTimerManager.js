@@ -6,6 +6,7 @@ game.GameTimerManager = Object.extend({
         this.paused = false;
         this.alwaysUpdate = true;
     },
+    //Updates the goldTimerCheck and creepTimercheck
     update: function() {
         this.now = new Date().getTime();
         this.goldTimerCheck(this.now);

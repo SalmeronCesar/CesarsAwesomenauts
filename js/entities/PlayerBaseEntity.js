@@ -39,9 +39,11 @@ game.PlayerBaseEntity = me.Entity.extend({
         this._super(me.Entity, "update", [delta]);
         return true;
     },
+    //If taken damage you lose health
     loseHealth: function(damage) {
         this.health = this.health - damage;
     },
+    //This is the onCollision's function
     onCollision: function() {
 
     }

@@ -22,7 +22,7 @@ $query = $_SESSION["connection"]->query("INSERT INTO users SET "
         . "exp3 = 0,"
         . "exp4 = 0");
         
-        $_SESSION("name") = $username;
+        $_SESSION["name"] = $username;
          
 if($query) {
     //Needs this for Ajax on index.php

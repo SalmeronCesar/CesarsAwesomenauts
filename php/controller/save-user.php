@@ -1,14 +1,14 @@
 <?php
 //Links to model folder in config
 require_one(__DIR__ ."/../model/conif.php");
-
+//Here we are Sanitizing the exps
 $exp = filter_input(INPUT_POST, "exp", FILTER_SANITIZE_STRING);
 $exp1 = filter_input(INPUT_POST, "exp1", FILTER_SANITIZE_STRING);
 $exp2 = filter_input(INPUT_POST, "exp2", FILTER_SANITIZE_STRING);
 $exp3 = filter_input(INPUT_POST, "exp3", FILTER_SANITIZE_STRING);
 $exp4 = filter_input(INPUT_POST, "exp4", FILTER_SANITIZE_STRING);
 
-
+//connecting the exps
 $query = $_SESSION("connection")->query("UPDATE users SET "
         . "exp = $exp, "
         . "exp1 = $exp1, "

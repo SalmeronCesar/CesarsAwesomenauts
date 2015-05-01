@@ -9,23 +9,22 @@ game.PlayScreen = me.ScreenObject.extend({
                 me.levelDirector.loadLevel("level01");
                 
                 this.resetPlayer(0, 420);
-                
+                //pulls the HeroDeathManager
                 var heroDeathManager = me.pool.pull("HeroDeathManager", 0, 0, {});
                 me.game.world.addChild(heroDeathManager, 0);
-                
+                //pulls the gameTimerManager
                 var gameTimerManager = me.pool.pull("GameTimerManager", 0, 0, {});
                 me.game.world.addChild(gameTimerManager, 0);
-                //When you press the right, left, space, and a. The player goes
-                // right,left, jumps and attacks
+                //pulls the ExperienceManager
                 var experienceManager = me.pool.pull("ExperienceManager", 0, 0, {});
                 me.game.world.addChild(experienceManager, 0);
-                
+                //pulls the SpendGold
                 var spendGold = me.pool.pull("SpendGold", 0, 0, {});
                 me.game.world.addChild(spendGold, 0);
                 
                 game.data.minimap = me.pool.pull("minimap", 10, 10, {});
                 me.game.world.addChild(game.data.minimap, 30);
-                
+                //these keys are connected to these skills and actions
                 me.input.bindKey(me.input.KEY.B, "buy");
                 me.input.bindKey(me.input.KEY.Q, "skill1");
                 me.input.bindKey(me.input.KEY.W, "skill2");
@@ -39,16 +38,14 @@ game.PlayScreen = me.ScreenObject.extend({
 		this.HUD = new game.HUD.Container();
 		me.game.world.addChild(this.HUD);
 	},
-
-
 	/**
 	 *  action to perform when leaving this screen (state change)
 	 */
+        //Destroys the play aka ends it 
 	onDestroyEvent: function() {
 		// remove the HUD from the game world
 		me.game.world.removeChild(this.HUD);
 	},
-        
         resetPlayer: function(x, y){
             //We are pulling the player out of the pool.
                 game.data.player = me.pool.pull("player", x, y, {});

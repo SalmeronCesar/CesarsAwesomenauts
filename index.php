@@ -58,8 +58,8 @@ require_once("php/controller/create-db.php");
                 <script type="text/javascript" src="js/gamemanagers/HeroDeathManager.js"></script>
                 <script type="text/javascript" src="js/entities/HUD.js"></script>
                 <script type="text/javascript" src="js/entities/SpearThrow.js"></script>
-                <script type="text/javascript" src="js/screens/MiniMap.js"></script>
-                <script type="text/javascript" src="js/screens/MiniPlayerLocation.js"></script>
+                <script type="text/javascript" src="js/entities/MiniMap.js"></script>
+                <script type="text/javascript" src="js/entities/MiniPlayerLocation.js"></script>
                 <script type="text/javascript" src="js/screens/title.js"></script>
                 <script type="text/javascript" src="js/screens/play.js"></script>
                 <script type="text/javascript" src="js/screens/spendExp.js"></script>
@@ -89,7 +89,8 @@ require_once("php/controller/create-db.php");
                             });
                         }
                     });</script>
-
+                        <!--Here is the function where you can go to the mainmenu,
+                        register, and create a password and username  -->
                 <script>
                     $("#mainmenu").bind("click", function() {
                         me.state.change(me.state.MENU);
@@ -116,6 +117,7 @@ require_once("php/controller/create-db.php");
                                     alert("Fail");
                                 });
                     });
+                    //loads tthe username and password
                     $("#load").bind("click", function(){
                     $.ajax({
                     type: "POST",
@@ -131,6 +133,7 @@ require_once("php/controller/create-db.php");
                             alert(response);
                             }
                             else{
+                                //In-game you earn exp 
                             var data = jQuery.parseJSON(response);
                                     game.data.exp = data["exp"];
                                     game.data.exp1 = data["exp1"];

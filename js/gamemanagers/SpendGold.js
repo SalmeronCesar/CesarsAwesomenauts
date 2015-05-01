@@ -1,13 +1,19 @@
+//This is the SpendGold function 
 game.SpendGold = Object.extend({
     init: function(x, y, settings){
+        //Gets the time
         this.now = new Date().getTime();
+        //Checks when he last bought something 
         this.lastBuy = new Date().getTime();
+        //Paused is not true
         this.paused = false;
+        //Always updates
         this.alwaysUpdate = true;
+        //Updates when paused
         this.updateWhenPaused = true;
         this.buying.false;
     },
-    
+    //Updates when the buy key is pressed and allows  you to buy and cancel the buying
     update: function(){
         this.now = new Date().getTime();
         
@@ -20,20 +26,22 @@ game.SpendGold = Object.extend({
             }
             
         }
-        
         this.checkBuyKeys();
         
         return true;
     },
+    //You can start buying and then the buyscreen will show up
     startBuying: function(){
         this.buying = true;
         me.state.pause(me.state.PLAY);
         game.data.pausePos = me.game.viewport.localToWorld(0, 0);
         game.data.buyscreen = new me.Sprite(game.data.pausePos.x, game.data.pausePos.y, me.loader.getImage('gold-screen'));
+        //Here when buyscreen is on game is paused
         game.data.buyscreen.updateWhenPaused = true;
         game.data.buyscreen.setOpacity(0.8);
         me.game.world.addChild(game.data.buyscreen, 34);
         game.data.player.body.setVelocity(0, 0);
+        //These are all keys that all have a certain function to them
         me.input.bindKey(me.input.KEY.F1, "F1", true);
         me.input.bindKey(me.input.KEY.F1, "F2", true);
         me.input.bindKey(me.input.KEY.F1, "F3", true);
@@ -42,16 +50,17 @@ game.SpendGold = Object.extend({
         me.input.bindKey(me.input.KEY.F1, "F6", true);
         this.setBuyText();
     },
-    
+    //This is the buytext 
     setBuyText: function(){
          game.data.buytext = new (me.Renderable.extend({
             init: function() {
                 this._super(me.Renderable, 'init', [game.data.pausePos.x, game.data.pausePos.y, 300, 50]);
                 this.font = new me.Font("Arial", 26, "white");
+                //when updated the game is then paused
                 this.updateWhenPaused = true;
                 this.alwaysUpdate = true;
             },
-            
+            //this is the text that appears on the spendgold screen
             draw: function(renderer) {
                 this.font.draw(renderer.getContext(), "PRESS F1-F6 TO BUY, B TO EXIT . Current Gold: ", this.pos.x, this.pos.y);
                 this.font.draw(renderer.getContext(), "Skill 1: Increase Damage. Current Level: " + game.data.ability1 + "  Cost: " +((game.data.ability1+1)*10), this.pos.x, this.pos.y + 40);
@@ -67,7 +76,7 @@ game.SpendGold = Object.extend({
         }));
         me.game.world.addChild(game.data.buytext, 35);
     },
-    
+    //Allows you to stop buying
     stopBuying: function(){
         this.buying = false;
         me.state.resume(me.state.PLAY);
@@ -81,7 +90,7 @@ game.SpendGold = Object.extend({
         me.input.unbindKey(me.input.KEY.F1, "F6", true);
         me.game.world.removeChild(game.data.buytext);
     },
-    
+    //Checks if the BuyKeys were pressed
     checkBuyKeys: function(){
         if(me.input.isKeyPressed("F1")){
             if(this.checkCost(1)){
@@ -109,7 +118,7 @@ game.SpendGold = Object.extend({
             }
         }
     },
-    
+    //Checks the cost of the skills 
     checkCost: function(skill){
         if(skill===1 && (game.data.gold >= ((game.data.skill1+1)*10))){
             return true;

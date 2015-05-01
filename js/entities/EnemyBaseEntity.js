@@ -1,3 +1,5 @@
+//Here this is the EnemyBase's function and the EnemyBase is a tower and has its own 
+//width and height
 game.EnemyBaseEntity = me.Entity.extend({
     init: function(x, y, settings) {
         this._super(me.Entity, 'init', [x, y, {
@@ -21,17 +23,18 @@ game.EnemyBaseEntity = me.Entity.extend({
         this.alwaysUpdate = true;
         //this.attacking lets us know if the enemy is currently attacking 
         this.attacking = false;
-        //
+        //This tells when I last attacked
         this.lastAttacking = new Date().getTime;
         this.now = new Date().getTime();
+        //This is a collide function which lets collide with objects
         this.body.onCollision = this.onCollision.bind(this);
-
         this.type = "EnemyBaseEntity";
-
+        //Here it adds and sets the Animations for the game/player
         this.renderable.addAnimation("idle", [0]);
         this.renderable.addAnimation("broken", [1]);
         this.renderable.setCurrentAnimation("idle");
     },
+    //Here its sayin if the any tower is at 0 helath then its broken
     update: function(delta) {
         if (this.health <= 0) {
             this.broken = true;
@@ -42,9 +45,11 @@ game.EnemyBaseEntity = me.Entity.extend({
         this._super(me.Entity, "update", [delta]);
         return true;
     },
+    //This is the onCollision function
     onCollision: function() {
 
     },
+    //This is the loseHeakth function
     loseHealth: function() {
         this.health--;
     }

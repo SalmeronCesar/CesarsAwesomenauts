@@ -7,6 +7,11 @@ var game = {
         //Enemybase,playerbase, enemycreephealth and playerhealth is set to 10
         //EnemyCreepAttack, playerAttack set to 1
         //playerAttackTimer and creepAttackTimer set to 1000
+        //ors stats are edited
+        //abilities and exp are set
+        //buyscreens and buytext are set
+        //minimap and miniplayer are set
+        //skills, gold, exp and pause are set
         score: 0,
         option1: "",
         option2: "",
@@ -16,10 +21,10 @@ var game = {
         playerHealth: 10,
         enemyCreepAttack: 1,
         playerAttack: 1,
-//                orcBaseDamage:10,
-//                orcBaseHealth: 100,
-//                orcBaseSpeed: 3,
-//                orcBaseDefense:0,
+        orcBaseDamage:10,
+        orcBaseHealth: 100,
+        orcBaseSpeed: 3,
+        orcBaseDefense:0,
         playerAttackTimer: 1000,
         creepAttackTimer: 1000,
         playerMoveSpeed: 5,
@@ -44,7 +49,8 @@ var game = {
         pausePos: "",
         buyscreen: "",
         buytext: "",
-        minimap: ""
+        minimap: "",
+        miniPlayer: ""
    },
     // Run on page load.
     "onload": function() {
@@ -91,7 +97,7 @@ var game = {
         me.pool.register("spear", game.SpearThrow, true);
         me.pool.register("minimap", game.MiniMap, true);
         me.pool.register("miniplayer", game.MiniPlayerLocation, true);
-
+        //This sets the actions for the places these actions belong to
         me.state.set(me.state.MENU, new game.TitleScreen());
         me.state.set(me.state.PLAY, new game.PlayScreen());
         me.state.set(me.state.SPENDEXP, new game.SpendExp());
